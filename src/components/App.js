@@ -6,7 +6,8 @@ import Pokemon from './Pokemon';
 class App extends React.Component {
   state = {
     loading: true,
-    pokemon: []
+    pokemon: [],
+    query: "",
   }
   
   getPokemon(cb) {
@@ -59,6 +60,15 @@ class App extends React.Component {
       });
     }
   }
+  handleNameInput = (e) =>
+    this.setState({
+      query: e.target.value
+    });
+
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -68,7 +78,21 @@ class App extends React.Component {
     else if (!this.state.loading) {
       console.log(this.state.pokemon)
       return(
-        <Pokemon pokemon={this.state.pokemon} />
+        <div className="app">
+          <form onSubmit={this.handleFormSubmit}>
+						<input 
+							type="text" 
+							onChange={this.handleNameInput}
+							value={this.state.query} 
+							placeholder="Invite Someone"
+						/>
+						<button type="submit" name="submit" value="submit">Submit</button>
+					</form>
+          <Pokemon 
+            pokemon={this.state.pokemon} 
+            query={this.state.query}
+          />
+        </div>
       )
     }
   }
