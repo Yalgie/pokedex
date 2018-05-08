@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import Async from 'async';
+import Pokemon from './Pokemon';
 
 class App extends React.Component {
   state = {
@@ -12,18 +13,18 @@ class App extends React.Component {
     let offset = 0;
     let queries = [];
     let pokemon = [];
-
+    
     const limit = 20;
     const offsetIncrease = 20;
     const maxResults = 151;
     const baseURL = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
     const loopCount = Math.round(maxResults / offsetIncrease);
-
+    
     for (let i = 0; i < loopCount; i++) {
       queries.push(baseURL + `&offset=${offset}`);
       offset += offsetIncrease;
     }
-
+    
     Async.mapLimit(queries, 1, (url, callback) => {
       Axios({
         method: "GET",
@@ -47,7 +48,7 @@ class App extends React.Component {
   }
   componentWillMount() {
     const cachedPokemon = localStorage.getItem('pokemon');
-
+    
     if (cachedPokemon === null) {
       this.getPokemon();
     }
@@ -65,13 +66,14 @@ class App extends React.Component {
       );
     }
     else if (!this.state.loading) {
-      return (
-        <ul>
-          {JSON.stringify(this.state.pokemon)}
-        </ul>
-      );
+      console.log(this.state.pokemon)
+      return(
+        <Pokemon pokemon={this.state.pokemon} />
+      )
     }
   }
 }
+
+// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
 
 export default App;
