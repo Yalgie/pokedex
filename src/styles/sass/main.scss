@@ -21,9 +21,207 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+html,body {
+  height: auto !important;
+}
+
 ul {
   padding-left: 20px;
 }
 
+.pokemon {
+  cursor: pointer;
+
+  img {
+    margin: 0 auto;
+    display: block;
+    position: relative;
+  }
+  p {
+    text-align: center;
+    text-transform: capitalize;
+  }
+  
+  transition: background-color 0.25s ease;
+  padding: 15px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #efeeee;
+
+    img {
+      animation: bounce 1s;
+    }
+  }
+}
+
+@keyframes bounce {
+	0%, 20%, 40%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+	10% {
+    transform: translateY(-10px);
+  }
+	30% {
+    transform: translateY(-5px);
+  }
+}
+
+
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  height: 100vh;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+  }
+
+  p {
+    font-weight: bold;
+    margin-top: 30px;
+    text-transform: uppercase;
+  }
+}
+
+.searchForm {
+  input {
+    width: 100%;
+    max-width: 500px;
+    margin: 15px auto;
+    display: block;
+    margin-top: 30px;
+    border-radius: 4px;
+    border: 1px solid #DDD;
+    padding: 10px 15px;
+    text-align: center;
+    outline: none;
+  }
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  display: block;
+  margin: 15px auto;
+}
+
+.credit {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #DDD;
+}
+
+.details {
+  .reset {
+    display: block;
+    margin: 15px 0px;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #F1F1F1;
+    outline: none;
+
+    &:hover {
+      background-color: #DDD;
+    }
+  }
+
+  .name {
+    text-transform: capitalize;
+  }
+
+  img {
+    // margin: 0 auto;
+    display: block;
+    transition: background-color 0.25s ease;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #efeeee;
+  }
+
+  .type-label {
+    padding: 0px 15px;
+    border-radius: 4px;
+    text-transform: capitalize;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    color: #F1F1F1;
+    font-size: 1rem;
+    float: left;
+    margin-right: 5px;
+    margin-top: 5px;
+    font-weight: bold;
+
+    &.poison {
+      background-color: plum;
+    }
+    &.grass {
+      background-color: rgba(16, 175, 16, 0.671);
+    }
+    &.fire {
+      background-color: orangered;
+    }
+    &.flying {
+      background-color: paleturquoise;
+      color: #333;
+    }
+    &.water {
+      background-color: teal;
+    }
+    &.bug {
+      background-color: rgb(46, 167, 46);
+    }
+    &.normal {
+      background-color: gray;
+    }
+    &.ground {
+      background-color: burlywood;
+    }
+    &.psychic {
+      background-color: palevioletred;
+    }
+    &.rock {
+      background-color: brown;
+    }
+    &.electric {
+      background-color: yellow;
+      color: #333;
+    }
+    &.ice {
+      background-color: turquoise;
+    }
+    &.dragon {
+      background-color: purple;
+    }
+    &.dark {
+      background-color: darkslategray;
+    }
+    &.fighting {
+      background-color: red;
+    }
+    &.ghost {
+      background-color: darkslateblue;
+    }
+    &.steel {
+      background-color: silver;
+    }
+    &.fairy {
+      background-color: pink;
+      color: #333;
+    }
+  }
+}
+
 @import "./vars.scss";
 @import "./helpers.scss";
+@import "./simple-grid.scss";

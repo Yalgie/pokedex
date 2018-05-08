@@ -2,15 +2,17 @@ import React from 'react';
 import Axios from 'axios';
 import Async from 'async';
 import Pokemon from './Pokemon';
+import Details from './Details';
 
 class App extends React.Component {
   state = {
     loading: true,
     pokemon: [],
     query: "",
+    selectedPokemon: null,
   }
   
-  getPokemon(cb) {
+  getAllPokemon(cb) {
     let offset = 0;
     let queries = [];
     let pokemon = [];
@@ -47,11 +49,29 @@ class App extends React.Component {
       localStorage.setItem('pokemon', JSON.stringify(pokemon));
     });
   }
+
+  getPokemon(id) {
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    
+    Axios({
+      method: "GET",
+      url: url
+    }).then((res) => {
+      // localStorage.setItem(`pokemon-${id}`, JSON.stringify(res.data));
+      this.setState({
+        loading: false,
+        selectedPokemon: res.data
+      });
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
   componentWillMount() {
     const cachedPokemon = localStorage.getItem('pokemon');
     
     if (cachedPokemon === null) {
-      this.getPokemon();
+      this.getAllPokemon();
     }
     else {
       this.setState({
@@ -62,42 +82,79 @@ class App extends React.Component {
   }
   handleNameInput = (e) =>
     this.setState({
-      query: e.target.value
+      query: e.target.value.toLowerCase()
     });
 
   handleFormSubmit = (e) => {
     e.preventDefault();
   }
 
+  handlePokemonSelection = (id) => {
+    // const cachedPokemon = localStorage.getItem(`pokemon-${id}`);
+    this.setState({
+      loading: true
+    });
+
+    // if (cachedPokemon === null) {
+    //   this.getPokemon(id);
+    // }
+    // else {
+    //   this.setState({
+    //     loading: false,
+    //     selectedPokemon: JSON.parse(cachedPokemon)
+    //   });
+    // }
+
+    this.getPokemon(id);
+  }
+
+  handleReset = (e) => {
+    this.setState({
+      selectedPokemon: null
+    });
+  }
+
   render() {
     if (this.state.loading) {
       return (
-        <p>Loading</p>
+        <div className="loading">
+          <img alt="loading" src={require('../images/loading.gif')} />
+          <p>Loading</p>
+        </div>
       );
     }
-    else if (!this.state.loading) {
-      console.log(this.state.pokemon)
+    else if (!this.state.loading && this.state.selectedPokemon === null) {
       return(
-        <div className="app">
-          <form onSubmit={this.handleFormSubmit}>
+        <div className="container">
+          <img className="logo" alt="logo" src={require('../images/logo.png')} />
+          <form className="searchForm" onSubmit={this.handleFormSubmit}>
 						<input 
 							type="text" 
 							onChange={this.handleNameInput}
 							value={this.state.query} 
-							placeholder="Invite Someone"
+							placeholder="Search"
 						/>
-						<button type="submit" name="submit" value="submit">Submit</button>
 					</form>
           <Pokemon 
             pokemon={this.state.pokemon} 
             query={this.state.query}
+            handlePokemonSelection={this.handlePokemonSelection}
+          />
+          <p className="credit text-center">Thanks to <a rel="noopener noreferrer" href="https://pokeapi.co/" target="_blank">Pokéapi</a> for the awesome API</p>
+        </div>
+      )
+    }
+    else if (!this.state.loading && this.state.selectedPokemon !== null) {
+      return(
+        <div className="container">
+          <Details 
+            handleReset={this.handleReset}
+            pokemon={this.state.selectedPokemon}
           />
         </div>
       )
     }
   }
 }
-
-// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
 
 export default App;

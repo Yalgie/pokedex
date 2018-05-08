@@ -1,26 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// const baseUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+const baseUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
 const Pokemon = props => 
-   <div className='pokemon'>
+   <div className='row'>
         {props.pokemon
         .filter(pokemon => pokemon.name.includes(props.query))
-        .map((pokemon, index) =>
-            
-            <div key={index}>
-                {/* <img 
-                    alt={pokemon.name} 
-                    src={
-                        baseUrl + 
-                        pokemon.url.split("pokemon/")[1].split("/")[0] + 
-                        ".png"
-                    } 
-                /> */}
-                <p>{pokemon.name} | {pokemon.url.split("pokemon/")[1].split("/")[0]}</p>
-            </div>
-        )}
+        .map((pokemon, index) => {
+            const pokeId = pokemon.url.split("pokemon/")[1].split("/")[0];
+            return(
+                <div
+                    onClick={() => props.handlePokemonSelection(pokeId)}
+                    className='col-3 pokemon'
+                    key={index}
+                    id={pokeId}
+                >
+                    <img
+                        alt={pokemon.name}
+                        src={
+                            baseUrl + pokeId + ".png"
+                        }
+                    />
+                    <p>{pokemon.name}</p>
+                </div>
+            )
+        })}
     </div>
 
 Pokemon.propTypes = {
@@ -29,6 +34,7 @@ Pokemon.propTypes = {
         name: PropTypes.string.isRequired
     })),
     query: PropTypes.string.isRequired,
+    handlePokemonSelection: PropTypes.func.isRequired,
 }
 
 export default Pokemon;
